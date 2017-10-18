@@ -1,10 +1,10 @@
 # SmsWpc
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.5.
+This project is about sending sms via a pc browser connected to you local network i.e `PC` and `Android Phone`
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:8881/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -12,7 +12,15 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `npm install` to install dependencies.
+Run `ng build` to build the project.
+The build artifacts will be stored in the `content/html` directory. Use the `-prod` flag for a production build.
+
+
+## Uploading on app
+
+Zip `content` folder to `content.zip` and place it in the  `assets` folder in android project.
+
 
 ## Running unit tests
 
