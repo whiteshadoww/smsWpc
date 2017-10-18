@@ -1,0 +1,109 @@
+<bsh>
+    import android.net.Uri;
+    import android.provider.Contacts.People;
+    import android.provider.Contacts.Phones;
+    import java.text.DateFormat;
+    import org.json.JSONArray;
+    import org.json.JSONObject;
+    import java.util.ArrayList;
+
+    service = server.props.get("serviceContext");
+    delete = parameters.get("delete");
+
+    SMS_CONTENT_URI = Uri.parse("content://sms");
+
+    // ArrayList for thread information
+    threadList=new JSONArray();
+
+    URI = Uri.parse("content://sms");
+
+
+    cur = service.getContentResolver().query(URI, new String[]{"DISTINCT thread_id"}, null, null,
+    "date DESC");
+    threadIDs = new ArrayList();
+
+
+    for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext()){
+    threadId=cur.getInt(0);
+    threadIDs.add(cur.getInt(0));
+
+    //messages
+    cur1 = service.getContentResolver().query(URI, new String[]{"COUNT(thread_id)"}, "thread_id=?",
+    new String[]{"" + threadId}, null);
+    cur1.moveToFirst();
+    count = cur1.getInt(0);
+    cur1.close();
+
+    // Unread messages
+    cur2 = service.getContentResolver().query(URI, new String[]{"COUNT(read)"},
+    "thread_id=? AND read == 0", new String[]{"" + threadId}, null);
+    cur2.moveToFirst();
+    unread = cur2.getInt(0);
+    cur2.close();
+
+
+    //last message
+    cur3 = service.getContentResolver().query(URI, null, "thread_id=?", new String[]{"" + threadId},
+    "date DESC LIMIT 1");
+
+    while (cur3.moveToNext()){
+    contactId = cur3.getInt(cur3.getColumnIndex("person"));
+    address = cur3.getString(cur3.getColumnIndex("address"));
+    date =  cur3.getLong(cur3.getColumnIndex("date"));
+    body = cur3.getString(cur3.getColumnIndex("body"));
+    name = null;
+    // Only if address != null. Otherwise it's a DRAFT
+    if (address != null) {
+
+
+    phones = service.getContentResolver().query(
+    android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new
+    String[]{android.provider.ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID},
+    android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER + "=?", new String[]{address},
+    null
+    );
+
+    while (phones.moveToNext()) {
+    contactId = phones.getInt(0);
+    }
+
+    phones.close();
+
+    if (contactId != 0) {
+
+    contact = service.getContentResolver().query(
+    android.provider.ContactsContract.Data.CONTENT_URI, new
+    String[]{android.provider.ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME},
+    android.provider.ContactsContract.Data.RAW_CONTACT_ID + "=? AND " +
+    android.provider.ContactsContract.CommonDataKinds.StructuredName.MIMETYPE + "=?",
+    new String[]{"" + contactId,
+    android.provider.ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE}, null
+    );
+
+    if (contact.moveToFirst()) {
+    name = contact.getString(0);
+    }
+
+    contact.close();
+    }
+
+
+    }
+    thread=new JSONObject()
+    .put("threadId",threadId)
+    .put("addr",address)
+    .put("name",name)
+    .put("contactId",contactId)
+    .put("date",date )
+    .put("mess",count)
+    .put("lastMess",body)
+    .put("unreadMess",unread);
+
+    threadList.put(thread);
+    }
+
+    }
+    cur.close();
+    print( threadList);
+
+</bsh>

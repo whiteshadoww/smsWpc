@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{data.thread.name==null? data.thread.addr:data.thread.name}}</h2>
+<mat-dialog-content>
+
+    <img src="api/seeContactImg.xhtml?contactId={{data.thread.contactId}}" mat-card-image class="contact-image">
+    <!--<img src="assets/bg.jpg" mat-card-image>-->
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="1" tabindex="1" color="accent">View Contact</button>
+    <button mat-button [mat-dialog-close]="2" tabindex="-1" color="accent">Message</button>
+</mat-dialog-actions>

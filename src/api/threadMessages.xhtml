@@ -1,0 +1,85 @@
+<bsh>
+    import android.app.Service;
+    import android.database.Cursor;
+    import android.net.Uri;
+    import java.text.DateFormat;
+    import android.provider.Contacts.People;
+    import android.content.ContentValues;
+    import org.json.JSONArray;
+    import org.json.JSONObject;
+
+    threadId = parameters.get("threadId");
+
+    STATUS_NONE = -1;
+    STATUS_COMPLETE = 0;
+    STATUS_PENDING = 64;
+    STATUS_FAILED = 128;
+
+    service = (Service) server.props.get("serviceContext");
+    SMS_CONTENT_URI = Uri.parse("content://sms");
+
+    // Mark all read
+    values = new ContentValues(1);
+    values.put("read", Integer.valueOf(1));
+    service.getContentResolver().update(SMS_CONTENT_URI, values, "thread_id=" + threadId, null);
+
+    SMS_READ_COLUMN = "read";
+    SORT_ORDER = "date DESC";
+
+    WHERE_CONDITION = "thread_id = " + threadId;
+
+    cursor = service.getContentResolver().query(
+    SMS_CONTENT_URI,
+    new String[] { "_id", "thread_id", "address", "person", "date", "body", "status", "read", "type"},
+    WHERE_CONDITION,
+    null,
+    SORT_ORDER + " LIMIT 30"
+    );
+
+    messList=new JSONArray();
+
+    if (cursor != null) {
+    try {
+
+
+
+    Integer index_Read = cursor.getColumnIndex("read");
+    Integer index_Person = cursor.getColumnIndex("person");
+    Integer index_Type = cursor.getColumnIndex("type");
+
+    for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
+
+    messageId = cursor.getLong(0);
+    threadId = cursor.getLong(1);
+    number = cursor.getString(2);
+    long timestamp = cursor.getLong(4);
+
+    body = cursor.getString(5);
+    status = cursor.getInt(6);
+
+    read = cursor.getInt(index_Read);
+    type = cursor.getInt(index_Type);
+
+
+    // Add links to URLs
+    body = body.replaceAll( "(http://[^\\s]*)", "<a href=\'$1\' target=\'_blank\' class='link'>$1</a>");
+
+        mess= new JSONObject()
+        .put("messageId",messageId)
+        .put("timestamp",timestamp)
+        .put("body",body)
+        .put("status",status)
+        .put("read",read)
+        .put("type",type);
+
+        messList.put(mess);
+
+    }
+    } finally {
+    cursor.close();
+    }
+    }
+
+  print(messList);
+
+</bsh>

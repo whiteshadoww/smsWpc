@@ -1,0 +1,12 @@
+mat-dialog-content{
+    margin-bottom: 0px;
+}
+
+mat-dialog-actions{
+    margin: 0;
+    padding: 0;
+}
+
+.contact-image{
+    height: 300px !important;
+}

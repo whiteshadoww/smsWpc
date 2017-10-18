@@ -1,0 +1,81 @@
+<mat-sidenav opened mode="side" [fixedInViewport]="true"
+             style="margin-top: 5px;background:  url('assets/bg.jpg')  no-repeat ;background-size: 100% 100%"
+             xmlns="">
+    <div *ngIf="selectedThread.threadId != -1">
+        <mat-toolbar>
+
+
+            <img src="api/seeContactImg.xhtml?contactId={{selectedThread.contactId}}" mat-card-avatar/>
+
+            <h3 class="name-title"> {{selectedThread.name==null? selectedThread.addr : selectedThread.name}} </h3>
+
+        </mat-toolbar>
+
+    </div>
+
+
+    <perfect-scrollbar class="messages">
+
+        <div>
+            <!--<mat-card *ngFor="let m of messageList" style="width: 60%;margin: 12px">-->
+
+            <!--<mat-card-header>-->
+            <!--{{m.type}}-->
+            <!--{{m.messageId}}-->
+            <!--{{m.status}}-->
+            <!--{{m.read}}-->
+            <!--{{m.timestamp}}-->
+            <!--</mat-card-header>-->
+
+            <!--<span [innerHTML]="linkfy(m.body)"></span>-->
+
+            <!--</mat-card>-->
+
+            <mat-card class="msg"
+
+                      *ngFor="let m of messageList"
+            >
+
+                <mat-card-header>
+
+                    <img src="api/seeContactImg.xhtml?contactId={{selectedThread.contactId}}" mat-card-avatar>
+
+                    <h3>
+                        {{
+                        (m.type==2) ? "Me" :
+                        selectedThread.name==null? selectedThread.addr : selectedThread.name
+                        }}
+                    </h3>
+                </mat-card-header>
+
+                <span [innerHTML]="m.body | linkify"></span>
+
+                <p>{{m.timestamp | timeAgo}}</p>
+
+            </mat-card>
+        </div>
+
+    </perfect-scrollbar>
+
+
+    <mat-card class="footer" style=" height: 64px;">
+
+        <mat-input-container class="inputMsg center" floatPlaceholder="never" [formGroup]="form">
+
+            <input class="inputMsg" matInput placeholder="Start typing" #msgg formControlName="msg">
+
+            <button mat-icon-button matPrefix>
+                <mat-icon>person</mat-icon>
+            </button>
+
+            <button mat-icon-button matSuffix (click)="sendMessage(msgg.value)">
+                <mat-icon>send</mat-icon>
+            </button>
+
+        </mat-input-container>
+
+
+    </mat-card>
+
+
+</mat-sidenav>

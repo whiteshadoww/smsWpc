@@ -1,0 +1,92 @@
+mat-sidenav {
+
+    margin-top: 6px;
+}
+
+.mat-card-avatar {
+    width: 60px !important;
+    height: 60px !important;
+}
+
+mat-card, .user-info {
+    padding: 8px;
+}
+
+.search {
+    width: 100%;
+}
+
+h3 {
+    margin: 2px;
+}
+
+perfect-scrollbar {
+    height: calc(100% - 64px);
+}
+
+.active {
+    background-color: #212121;
+}
+
+/*placfe holder*/
+
+@keyframes pulse {
+    0% {
+        opacity: .5
+    }
+    100% {
+        opacity: 1
+    }
+}
+
+.post-feed {
+
+    width: 100%;
+    /*margin: 10px auto 20px;*/
+    /*background: #E1E9EE;*/
+}
+
+.width500 {
+    width: 314px;
+
+}
+
+.width470 {
+    width: 470px;
+}
+
+.width110 {
+    width: 110px;
+}
+
+.width250 {
+    width: 250px;
+}
+
+.line {
+    height: 8px;
+    margin: 10px;
+}
+
+.shimmer {
+    background: #616161;
+    -webkit-animation: pulse .65s infinite alternate;
+    animation: pulse .65s infinite alternate;
+}
+
+.circle {
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    width: 56px;
+    height: 56px;
+}
+
+.line-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.height20 {
+    height: 20px;
+}

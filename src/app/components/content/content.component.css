@@ -1,0 +1,50 @@
+.mat-toolbar-row {
+    justify-content: space-between;
+}
+
+.name-title {
+    margin-left: 8px;
+}
+
+mat-sidenav {
+    width: calc(73.65%);
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 48px);
+    padding-top: 4px;
+    padding-bottom: 0px;
+    height: 64px;
+
+}
+
+.messages {
+    height: calc(100% - 140px);
+}
+
+.inputMsg {
+    width: calc(100% - 48px);
+
+}
+
+.msg {
+    width: 60ch;
+    margin: 12px;
+    padding: 8px;
+    background-color: #42424266;
+}
+
+mat-card-header h3 {
+    margin-top: 4px;
+}
+
+mat-card span {
+    margin-left: 56px;
+}
+
+mat-card p {
+    width: 120px;
+    margin-left: calc(100% - 120px);
+}

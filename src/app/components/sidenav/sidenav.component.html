@@ -1,0 +1,99 @@
+<mat-sidenav-container>
+
+    <mat-sidenav opened mode="side"
+                 disableClose
+                 [fixedInViewport]="true" [style.width]="(isHandset | async)?.matches ? '80px': '360px'">
+
+        <mat-toolbar *ngIf="!(isHandset | async)?.matches">
+            <button mat-icon-button aria-label="Open basic menu" (click)="start.open()">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-form-field class="search" floatPlaceholder="never">
+
+                <input matInput
+
+                       placeholder="Search"
+                       #search
+                       (keyup)="filterThread(search.value.toLocaleLowerCase())"
+                       (focus)="searchFocused()"
+
+                       type="search"
+                >
+                <button mat-icon-button matPrefix *ngIf="!isSearching">
+                    <mat-icon>search</mat-icon>
+                </button>
+
+                <button mat-icon-button matSuffix *ngIf="isSearching" (onclick)="search.value='';searchFocused() ">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+
+            </mat-form-field>
+
+        </mat-toolbar>
+
+        <!--available chats-->
+
+
+        <!--tablet & pc-->
+        <perfect-scrollbar [scrollIndicators]="true">
+            <div #chats id="chats">
+
+                <div *ngIf="isDummy">
+                    <mat-card *ngFor="let x of dummy">
+                        <div class="module post-feed">
+                            <img mat-card-avatar class="circle shimmer">
+                            <div class="line-wrapper">
+                                <div class="line width110 shimmer"></div>
+                                <div class="line width250 shimmer"></div>
+                                <div class="line width250 shimmer"></div>
+                            </div>
+                            <div class="line width500 shimmer"></div>
+                        </div>
+                    </mat-card>
+                </div>
+
+                <div *ngIf="!isDummy">
+                    <mat-card mat-ripple
+                              [matRippleCentered]="false"
+                              [ngClass]="{'active': activeThread.threadId == thread.threadId}"
+                              *ngFor="let thread of (isSearching ?  searchThreadList : threadList)"
+                              (click)="onClick(thread)" color="accent"   >
+
+                        <div class="  post-feed">
+                            <img mat-card-avatar class="circle"
+                                 [ngClass]="{'shimmer': thread.threadId == -1}"
+                                 src="api/seeContactImg.xhtml?contactId={{thread.contactId}}"
+                                 (click)="previewUserImage($event,thread)">
+                            <div class="line-wrapper" *ngIf="!(isHandset | async)?.matches ">
+                                <div [ngClass]="{'shimmer': thread.threadId == -1}"
+                                     class="line width110">
+                                    {{thread.name== null ? thread.addr : thread.name}}
+                                </div>
+                                <div [ngClass]="{'shimmer': thread.threadId == -1}"
+                                     class="line width250">
+                                    {{thread.lastMess}}
+                                </div>
+                                <div [ngClass]="{'shimmer': thread.threadId == -1}"
+                                     class="line width250">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </mat-card>
+                </div>
+
+
+            </div>
+        </perfect-scrollbar>
+
+
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <app-content
+                [messageList]="messageList"
+                [selectedThread]="activeThread"></app-content>
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
