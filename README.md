@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/whiteshadoww/smsWpc.svg?branch=master)](https://travis-ci.org/whiteshadoww/5)
 # SmsWpc
 
 This project is about sending sms via a pc browser connected to you local network i.e `PC` and `Android Phone`
